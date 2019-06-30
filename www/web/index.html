@@ -1,0 +1,93 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="./css/weibo.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="nArea">
+    <!--留言-->
+    <div class="takeComment">
+        <textarea name="textarea" class="takeTextField" id="text"></textarea>
+        <div class="takeSbmComment">
+            <input type="button" id="submit" class="inputs" value=""/>
+            <span>(可按 Enter 回复)</span>
+        </div>
+    </div>
+    <!--已留-->
+    <div class="commentOn">
+        <div class="messList" id="div1" style="height:502px">
+            <div class="reply">
+                <p class="replyContent">1232131</p>
+                <p class="operation">
+                    <span class="replyTime">2018-09-08 16:37:60</span>
+                    <span class="handle">
+                        <a href="javascript:;" class="top">0</a>
+                        <a href="javascript:;" class="down_icon">0</a>
+                        <a href="javascript:;" class="cut">删除</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <!-- <div class="page" id="page">
+            <a href="#" class="active">1</a>
+            <a href="#" >2</a>
+        </div> -->
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script>
+    $('#submit').click(function(){
+        console.log('value', $('#text').val())
+        const data = escap($('#text').val())
+        console.log('data', data)
+        $.post('/list',{val: data})
+        .then((data)=>{
+            if(data.code === 0){
+                render(data);
+            }else{
+                location.href = '/admin'; 
+            }
+        })
+    });
+
+    function escap(str){
+        return str.replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/\//g,'&#x2F')
+    }
+
+
+    function render(data){
+        let html = '';
+        data.msg.forEach((item)=>{
+            html += `
+            <div class="reply">
+                <p class="replyContent">${item.val}</p>
+                <p class="operation">
+                    <span class="replyTime">2018-09-08 16:37:60</span>
+                    <span class="handle">
+                        <a href="javascript:;" class="top">0</a>
+                        <a href="javascript:;" class="down_icon">0</a>
+                        <a href="javascript:;" class="cut">删除</a>
+                    </span>
+                </p>
+            </div>
+            `;
+        })
+        $('#div1').html(html);
+    }
+
+    //开头不为javascript
+    function fn(str){
+        return str.replace(/\s*/,'')
+        .replace(/^javascript/,'')
+    }
+
+    console.log(fn('javascript:alert(1);'))
+
+
+</script>
+</body>
+</html>

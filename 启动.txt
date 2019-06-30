@@ -1,0 +1,4 @@
+直接node app 运行服务端
+
+打开浏览器输入:localhost/admin或者输入localhost/web
+
